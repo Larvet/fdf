@@ -1,47 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_fonctions.c                                  :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/16 18:15:37 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 16:25:27 by locharve         ###   ########.fr       */
+/*   Created: 2023/11/01 14:21:37 by locharve          #+#    #+#             */
+/*   Updated: 2024/01/30 14:10:35 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	ft_isdigit(char c)
+void	ft_bzero(void *s, size_t n)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
-	else
-		return (0);
+	unsigned char	*ptr;
+	size_t			i;
+
+	ptr = s;
+	i = 0;
+	while (i < n)
+	{
+		ptr[i] = 0;
+		i++;
+	}
+	return ;
 }
 
-int	ft_isspace(char c)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	else
-		return (0);
-}
+	unsigned char	*ptr;
 
-int	ft_issign(char c)
-{
-	if (c == 43)
-		return (1);
-	else if (c == 45)
-		return (-1);
-	else
-		return (0);
-}
-
-int	ft_isascii(int c)
-{
-	if (c >= 0 && c <= 127)
-		return (1);
-	else
-		return (0);
+	ptr = NULL;
+	if ((nmemb > 65535 && size > 65535) || nmemb * size > 2147483647)
+		return (ptr);
+	ptr = (unsigned char *)malloc(nmemb * size);
+	if (!ptr)
+		return (NULL);
+	ft_bzero(ptr, nmemb * size);
+	return ((void *)ptr);
 }

@@ -5,146 +5,181 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 10:06:54 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/29 12:18:13 by locharve         ###   ########.fr       */
+/*   Created: 2024/01/30 14:49:20 by locharve          #+#    #+#             */
+/*   Updated: 2024/01/30 17:09:04 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "get_next_line.h"
 
-static int	z_and_color(t_point **point, char **split_point)
+// verifs : map valide ? ouvrable ? 
+
+static t_line	*read_file(int fd)
 {
-	long long	tmp;
+	t_line	*line_tab;
+	t_line	*tmp;
+	char	*str;
 
-	if (split_point[0])
+	line_tab = NULL;
+	str = get_next_line(fd);
+	while (str)
 	{
-		tmp = ft_atoll(split_point[0]);
-		if (is_valid_nbr(split_point[i])) /////////
-			(*point_tab)->z = (int)tmp;
-		else
+		tmp = line_lstnew(str);
+		if (!tmp)
 		{
-			print_error("Invalid number.\n"); ///////////
-			return (0);
-		}
-	}
-	if (split_point[1])
-	{
-		if (is_valid_color(split_point[1])) ///////////////
-			(*point_tab)->color = ft_atoi_base(split_point[1], HEX_BASE);
-		else
-		{
-			print_error("Invalid color.\n");
-			return (0);
-		}
-		if (split_point[2])
-		{
-			print_error("Unexpected parameter.\n");
-			return (0);
-		}
-	}
-	return (1);
-}
-
-static void	init_points(t_point **point_tab, char **split_line, int y)
-{
-	char		**split_point;
-	long long	tmp;
-	int			i;
-
-	i = 0;
-	while (split_line[i])
-	{
-		split_point = ft_split(split_line, ',');
-		if (!split_point)
-			return (NULL);
-		(*point_tab + i)->x = i;
-		(*point_tab + i)->y = y;
-		if (!z_and_color(&(*point_tab + i), split_point))
-		{
-			free(split_point);
+			invalid_procedure(line_tab, str, fd);
 			return (NULL);
 		}
-
-		// check str avant ?
-		tmp = ft_atoll(split[i]); /////////////////////////
-		if (is_valid_nbr(tmp) && is_valid_str(split[i])) //////////
-			(*point_tab)->z = (int)tmp;
-		else
-		{
-			print_error("Invalid number.\n");
-
-		}
-		//
-		i++;
-	} //////////////////////////////
+		line_lstadd_back(&line_tab, tmp);
+		free(str);
+		str = get_next_line(fd);
+	}
+	close(fd);
+	return (line_tab);
 }
 
-static t_point	*split_line(char *line, int y)
-{
-	t_point	*point_tab;
-	char	**split_line;
-	int		size;
-	int		i;
-
-	split_line = ft_split(line, ' ');
-	if (!split)
-		return (NULL);
-	size = split_size(split_line);
-	point_tab = (t_point *)malloc((size + 1) * sizeof(t_point));
-	if (point_tab)
-	{ /////////////////////////////////
-		i = 0;
-		while (split_line[i])
-		{
-			split_point = ft_split(split_line[i], ',');
-			if (!split_point)
-			{
-				free_all(split_line, size); //////////////
-				return (NULL);
-			}
-			i++;
-		}
-		init_points(&point_tab, split, y);
-	return (point_tab);
-}
-
-static void	init_map(t_point ***map, t_line *line_tab)
+static int	equal_lines(t_line *line_tab)
 {
 	t_line	*head;
 
 	head = line_tab;
-	i = 0;
-	while (line_tab)
-	{
-		(*map)[i] = split_line(line_tab->line, i);
-		if (!(*map)[i])
-		{
-			free_map(*map, size);	//////
-			return ;
-		}
+	while (line_tab && line_tab->nxt && line_tab->count == line_tab->nxt->count)
 		line_tab = line_tab->nxt;
-		i++;
+	if (!line_tab->nxt)
+	{
+		line_tab = head;
+		return (1);
 	}
-	line_tab = head;
-	return ;
+	else
+	{
+		line_tab = head;
+		return (0);
+	}
 }
 
-t_point	**parsing(char *path)
+static int	init_point_tab(t_point *p_tab, char **split, int *i)
+{
+	long long	tmp;
+	int			j;
+
+	j = 0;
+	while (split[j])
+	{
+		printf("|%s|\n", split[j]); /////////////////
+		if (!is_valid_str(split[j]))
+		{
+			print_error("Invalid format\n");
+			return (0);
+		}
+		tmp = ft_atoll(split[j]);
+		if (!is_valid_nbr(tmp))
+		{
+			print_error("Invalid number\n");
+			return (0);
+		}
+		p_tab[*i].x = j;
+		p_tab[*i].z = (int)tmp;
+		tmp = is_valid_color(ft_strchr(split[j], ','));
+		//printf("color = %d\n", (int)tmp); //////////////////
+		if (tmp > -2)
+		{
+			if (tmp == -1)
+			{
+				print_error("Invalid color\n");
+				return (0);
+			}
+			p_tab[*i].color = (int)tmp;
+		}
+		else
+			p_tab[*i].color = -1;
+		*i += 1;
+		j++;
+	}
+	return (1);
+}
+
+static t_point	*convert_lines(t_line *l_tab)
+{
+	t_line	*head;
+	t_point	*p_tab;
+	char	**split;
+	int		i;
+
+	head = l_tab;
+	p_tab = ft_calloc((line_lstsize(l_tab) * l_tab->count) + 1, sizeof(*p_tab));
+	//printf("size = %d\n", (line_lstsize(l_tab) * l_tab->count) + 1); ////////
+	if (!p_tab)
+		return (NULL);
+	i = 0;
+	while (l_tab)
+	{
+		split = ft_split(l_tab->line, ' ');
+		if (!split)
+		{
+			free(p_tab);
+			return (NULL);
+		}
+		if (!init_point_tab(p_tab, split, &i))
+		{
+			free_all(split, l_tab->count);
+			free(p_tab);
+			l_tab = head;
+			return (NULL);
+		}
+		p_tab[i].y = i / l_tab->count; ////////////////////
+		free_all(split, l_tab->count);
+		l_tab = l_tab->nxt;
+	}
+	p_tab[i].color = -2; //////////////
+	l_tab = head;
+	return (p_tab);
+}
+
+t_point	*parsing(char *path)
 {
 	t_line	*line_tab;
-	t_point	**map;
-	//int		i;
-	int		size;
+	t_point	*point_tab;
+	int		fd;
 
-	line_tab = read_file(path);
-	if (line_tab)
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
 	{
-		size = line_lstsize(line_tab);
-		map = (t_point **)malloc((size + 1) * sizeof(t_point *)); ///
-		if (map)
-			init_map(&map, line_tab);
-		//*//
-		line_lstclear(line_tab);
+		print_error("Cannot open file\n");
+		return (NULL);
 	}
-	return (map);
+	line_tab = read_file(fd);
+	if (!equal_lines(line_tab))
+	{
+		print_error("Invalid map\n");
+		line_lstclear(line_tab);
+		return (NULL);
+	}
+	point_tab = convert_lines(line_tab);
+	line_lstclear(line_tab);
+	return (point_tab);
+}
+
+int	main(int argc, char **argv)
+{
+	t_point	*map;
+	int		i;
+
+	if (argc == 2)
+	{
+		// check le path *.fdf
+		map = parsing(argv[1]);
+		if (map)
+		{
+			printf("ok gro.\n");
+			i = 0;
+			while (map[i].color >= -1)
+			{
+				printf("x = %d\ty = %d\tz = %d\tcolor = %d\n", map[i].x, map[i].y, map[i].z, map[i].color);
+				i++;
+			}
+			free(map);
+		}
+	}
+	return (0);
 }

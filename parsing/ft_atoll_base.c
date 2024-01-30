@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi_base.c                                     :+:      :+:    :+:   */
+/*   ft_atoll_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:33:48 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/29 12:16:54 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/30 17:08:05 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "fdf.h"
 
-static int	ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
 	int	i;
 
@@ -67,18 +67,18 @@ static int	index_base(char *base, char c)
 	int	i;
 
 	i = 0;
-	while (c != base[i])
+	while (c != base[i] && c != base[i] + 32)
 		i++;
 	return (i);
 }
 
-int	ft_atoi_base(char *str, char *base)
+long long	ft_atoll_base(char *str, char *base)
 {
-	int	i;
-	int	sign;
-	int	result;
-	int	index;
-	int	len_base;
+	int			i;
+	int			sign;
+	long long	result;
+	int			index;
+	int			len_base;
 
 	if (check_base(base) == 0)
 		return (0);

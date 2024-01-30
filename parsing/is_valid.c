@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 12:01:47 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/29 12:11:49 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/30 17:07:59 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,63 @@ int	is_valid_nbr(long long nbr)
 		return (0);
 }
 
+int	is_in_base(char *base, char c)
+{
+	int	i;
+
+	i = 0;
+	while (c != base[i] && c != base[i] + 32)
+		i++;
+	if (!base[i])
+		return (0);
+	else
+		return (1);
+}
+
 int	is_valid_str(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
-	{
-		if (ft_issign(str[i]) && ((i > 0 && !ft_isspace(str[i - 1]))
-				|| !ft_isdigit(str[i + 1])))
-			return (0);
-		if (!ft_issign(str[i]) && !ft_isspace(str[i]) && !ft_isdigit(str[i]))
-			return (0);
+	while (str[i] && ft_isdigit(str[i]))
 		i++;
-	}
-	return (1);
-}
-
-int	is_valid_color(int nbr)
-{
-	if (nbr >= 0 && nbr <= 16777215)
+	if (!str[i] || str[i] == '\n')
+		return (1);
+	else if (str[i] && str[i] != ',')
+		return (0);
+	else
+		i++;
+	if (str[i] != '0')
+		return (0);
+	else
+		i++;
+	if (str[i] != 'x')
+		return (0);
+	else
+		i++;
+	while (str[i] && is_in_base(HEX_BASE, str[i]))
+		i++;
+	if (!str[i])
 		return (1);
 	else
 		return (0);
+}
+
+int	is_valid_color(char *str)
+{
+	long long	color;
+
+	if (!str)
+		return (-2);
+	if (str[0] && str[0] == '0' && str[1] && str[1] == 'x')
+	{
+		if (str[2])
+		{
+			color = ft_atoll_base(&str[2], HEX_BASE);
+			printf("color = %lld\n", color); /////////////////
+			if (color >= 0 && color <= 16777215)
+				return ((int)color);
+		}
+	}
+	return (-1);
 }

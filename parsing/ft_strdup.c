@@ -1,47 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_fonctions.c                                  :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/16 18:15:37 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 16:25:27 by locharve         ###   ########.fr       */
+/*   Created: 2023/11/01 16:49:17 by locharve          #+#    #+#             */
+/*   Updated: 2024/01/30 12:54:40 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	ft_isdigit(char c)
+static char	*ft_strcpy(char *dest, char *src)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
-	else
-		return (0);
+	int	i;
+
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-int	ft_isspace(char c)
+char	*ft_strdup(char *s)
 {
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	else
-		return (0);
-}
+	char	*dup;
 
-int	ft_issign(char c)
-{
-	if (c == 43)
-		return (1);
-	else if (c == 45)
-		return (-1);
-	else
-		return (0);
-}
-
-int	ft_isascii(int c)
-{
-	if (c >= 0 && c <= 127)
-		return (1);
-	else
-		return (0);
+	dup = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (dup == NULL)
+		return (NULL);
+	dup = ft_strcpy(dup, s);
+	return (dup);
 }

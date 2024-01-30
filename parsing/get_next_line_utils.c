@@ -1,47 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_fonctions.c                                  :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/16 18:15:37 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 16:25:27 by locharve         ###   ########.fr       */
+/*   Created: 2023/11/22 12:29:58 by locharve          #+#    #+#             */
+/*   Updated: 2024/01/30 14:11:02 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "get_next_line.h"
 
-int	ft_isdigit(char c)
+char	*ft_strchr(char *str, int c)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
-	else
-		return (0);
+	int	i;
+
+	if (str)
+	{
+		i = 0;
+		while (str[i] && str[i] != c)
+			i++;
+		if (str[i] == c)
+			return (&str[i + 1]);
+	}
+	return (NULL);
 }
 
-int	ft_isspace(char c)
+char	*ft_strcat_dst(char *dst, char *s1, char *s2)
 {
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	else
-		return (0);
-}
+	int	i;
+	int	j;
 
-int	ft_issign(char c)
-{
-	if (c == 43)
-		return (1);
-	else if (c == 45)
-		return (-1);
-	else
-		return (0);
-}
-
-int	ft_isascii(int c)
-{
-	if (c >= 0 && c <= 127)
-		return (1);
-	else
-		return (0);
+	i = 0;
+	while (s1[i])
+	{
+		dst[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		dst[i + j] = s2[j];
+		j++;
+	}
+	dst[i + j] = '\0';
+	return (dst);
 }

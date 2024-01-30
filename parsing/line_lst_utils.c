@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:46:07 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/25 14:12:23 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/30 15:45:21 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_line	*line_lstnew(char *str)
 	new = (t_line *)malloc(sizeof(t_line));
 	if (!new)
 		return (NULL);
-	new->line = str;
+	new->line = ft_strdup(str);
+	new->count = count_words((char const *)new->line, ' ');
 	new->nxt = NULL;
 	return (new);
 }
@@ -46,7 +47,7 @@ void	line_lstclear(t_line *lst)
 	if (lst->nxt)
 		line_lstclear(lst->nxt);
 	if (lst->line)
-		free(line);
+		free(lst->line);
 	if (lst)
 		free(lst);
 	return ;

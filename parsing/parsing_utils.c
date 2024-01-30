@@ -6,18 +6,19 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:38:29 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/29 12:18:22 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/30 12:41:09 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "get_next_line.h"
 
 void	invalid_procedure(t_line *line_tab, char *str, int fd)
 {
 	line_lstclear(line_tab);
 	line_tab = NULL;
 	free(str);
-	clsoe(fd);
+	close(fd);
 	str = get_next_line(fd);
 	free(str);
 	return ;
@@ -30,8 +31,8 @@ void	free_map(t_point **map, int size)
 	i = 0;
 	while (i < size)
 	{
-		if ((*map)[i])
-			free((*map)[i]);
+		if ((*map + i))
+			free((*map + i));
 		i++;
 	}
 	return ;
@@ -88,6 +89,7 @@ t_line	*read_file(char *path)
 			invalid_procedure(line_tab, str, fd);
 			return (NULL);
 		}
+		printf("LINE %s\n", tmp->line); ////////////////////////////
 		line_lstadd_back(&line_tab, tmp);
 		free(str);
 		str = get_next_line(fd);
