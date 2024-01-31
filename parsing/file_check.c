@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:46:41 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 11:58:59 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:54:31 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	check_path_end(char *big, char *little)
 {
 	int	i;
 	int	j;
-	
+
 	if (!big || !little)
 		return (0);
 	i = 0;

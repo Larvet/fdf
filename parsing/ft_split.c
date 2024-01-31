@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:54:51 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 16:24:49 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:44:09 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	count_words(char const *str, char c)
 			count++;
 		i++;
 	}
-	if (i > 0 && str[i - 1] != c)
+	if (i > 0 && str[i - 1] != c && str[i - 1] != '\n')
 		count++;
 	return (count);
 }

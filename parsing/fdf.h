@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:26:18 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 16:28:25 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:45:43 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,33 @@ typedef struct s_point
 	int	color;
 }	t_point;
 
+typedef struct s_map
+{
+	t_point	*tab;
+	int		width;
+	int		height;
+}	t_map;
+
 ////////////////////////////////////////////////////////////// PARSING
 
 /**/// parsing.c // A MODIFIER
-// static int	init_points(t_point *point_tab, char *split_line, int y);
-// static t_point	*split_line(char *line, int y);
-// static void	init_map(t_point **map, t_line *line_tab);
-t_point		*parsing(char *path);
+// static int	equal_lines(t_line *line_tab);
+// static int	separate_points(t_line *l_tab, t_point *p_tab, int *i);
+// static t_point	*convert_lines(t_line *l_tab);
+// static t_point	*parsing(t_line *line_tab, char *path);
+int			make_map(t_map *map, char *path);
+
+/**/// init_point_tab.c
+// static int	put_color(char *str);
+// static int	check_z(char *str, long long *tmp);
+int			init_point_tab(t_point *p_tab, char **split, int *i, int count);
 
 /**/// parsing_utils.c
 void		invalid_procedure(t_line *line_tab, char *str, int fd);
 void		free_map(t_point **map, int size);
 int			split_size(char **split);
 long long	ft_atoll(char *str);
-//t_line		*read_file(char *path);
+t_line		*read_file(int fd);
 
 /**/// ft_calloc.c
 void		ft_bzero(void *s, size_t n);
@@ -63,17 +76,12 @@ char		*ft_strdup(char *s);
 /**/// free_all_map.c
 void		free_all_map(t_point **map);
 
-/**/// z_and_color.c
-// static int	put_z(t_point *point, char *str);
-// static int	put_color(t_point *point, char *str);
-int			z_and_color(t_point *point, char **split_point);
-
 /**/// ft_atoi_base.c
-int				ft_strlen(char *str);
+int			ft_strlen(char *str);
 // static int	before_number(char *str, int *i);
 // static int	check_base(char *str);
 // static int	index_base(char *base, char c);
-long long		ft_atoll_base(char *str, char *base);
+long long	ft_atoll_base(char *str, char *base);
 
 /**/// is_valid.c
 int			is_valid_nbr(long long nbr);
@@ -98,7 +106,7 @@ int			line_lstsize(t_line *lst);
 void		line_lstclear(t_line *lst);
 
 /**/// ft_split.c
-int		count_words(char const *str, char c);
+int			count_words(char const *str, char c);
 // static char	*str_piece_cpy(const char *s, int start, int end);
 // static char	*from_str_to_strs(const char *s, int *i, char c);
 void		free_all(char **split, int nbr_str);
@@ -108,8 +116,6 @@ char		**ft_split(char const *s, char c);
 void		print_error(char *str);
 
 ////////////////////////////////////////////////////////////// ALGORITHM
-
-
 
 ////////////////////////////////////////////////////////////// OTHERS
 

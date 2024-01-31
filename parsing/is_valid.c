@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 12:01:47 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 17:07:59 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:47:15 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,26 @@ int	is_valid_str(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] && ft_issign(str[i]))
+		i++;
 	while (str[i] && ft_isdigit(str[i]))
 		i++;
 	if (!str[i] || str[i] == '\n')
 		return (1);
 	else if (str[i] && str[i] != ',')
 		return (0);
-	else
-		i++;
+	i++;
 	if (str[i] != '0')
 		return (0);
-	else
-		i++;
+	i++;
 	if (str[i] != 'x')
 		return (0);
-	else
-		i++;
+	i++;
 	while (str[i] && is_in_base(HEX_BASE, str[i]))
 		i++;
 	if (!str[i])
 		return (1);
-	else
-		return (0);
+	return (0);
 }
 
 int	is_valid_color(char *str)
@@ -73,7 +71,6 @@ int	is_valid_color(char *str)
 		if (str[2])
 		{
 			color = ft_atoll_base(&str[2], HEX_BASE);
-			printf("color = %lld\n", color); /////////////////
 			if (color >= 0 && color <= 16777215)
 				return ((int)color);
 		}

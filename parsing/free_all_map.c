@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 12:02:40 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 12:07:16 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:54:10 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,10 @@
 void	free_all_map(t_point **map)
 {
 	int	i;
-	//int	j;
 
 	i = 0;
 	while (map[i])
 	{
-	/*
-		j = 0;
-		while (map[i][j])
-		{
-			free(map[i][j]);
-			j++;
-		}
-	*/
 		free(map[i]);
 		i++;
 	}

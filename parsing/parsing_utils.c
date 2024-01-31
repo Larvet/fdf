@@ -6,7 +6,7 @@
 /*   By: locharve <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:38:29 by locharve          #+#    #+#             */
-/*   Updated: 2024/01/30 12:41:09 by locharve         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:02:22 by locharve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ long long	ft_atoll(char *str)
 
 	result = 0;
 	i = 0;
-	while (str[i] && ft_isspace(str[i])) //////////////
+	while (str[i] && ft_isspace(str[i]))
 		i++;
 	sign = ft_issign(str[i]);
 	if (sign)
@@ -71,15 +71,13 @@ long long	ft_atoll(char *str)
 	return (result);
 }
 
-t_line	*read_file(char *path)
+t_line	*read_file(int fd)
 {
 	t_line	*tmp;
 	t_line	*line_tab;
 	char	*str;
-	int		fd;
 
 	line_tab = NULL;
-	fd = open(path, O_RDONLY);
 	str = get_next_line(fd);
 	while (str)
 	{
@@ -89,7 +87,6 @@ t_line	*read_file(char *path)
 			invalid_procedure(line_tab, str, fd);
 			return (NULL);
 		}
-		printf("LINE %s\n", tmp->line); ////////////////////////////
 		line_lstadd_back(&line_tab, tmp);
 		free(str);
 		str = get_next_line(fd);
